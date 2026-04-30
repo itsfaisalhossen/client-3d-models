@@ -20,12 +20,13 @@ export const router = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
-        loader: () => fetch('https://3d-model-server.vercel.app/latest-models')
+        loader: () => fetch(`http://localhost:3000/latest-models`),
+        // loader: () => fetch("https://3d-model-server.vercel.app/latest-models"),
       },
       {
         path: "/all-models",
         element: <AllModels />,
-        loader: () => fetch('https://3d-model-server.vercel.app/models')
+        loader: () => fetch(`http://localhost:3000/models`),
       },
       {
         path: "/profile",
@@ -45,6 +46,13 @@ export const router = createBrowserRouter([
       },
       {
         path: "/model-details/:id",
+        // loader: ({ params }) => {
+        //   return fetch(`http://localhost:3000/models/${params.id}`, {
+        //     headers: {
+        //       authorization: "hello",
+        //     },
+        //   });
+        // },
         element: (
           <PrivateRoute>
             <ModelDetails />
@@ -52,7 +60,7 @@ export const router = createBrowserRouter([
         ),
       },
 
-       {
+      {
         path: "/my-models",
         element: (
           <PrivateRoute>
@@ -60,8 +68,7 @@ export const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
-
-       {
+      {
         path: "/my-downloads",
         element: (
           <PrivateRoute>
@@ -70,15 +77,20 @@ export const router = createBrowserRouter([
         ),
       },
 
-        {
+      {
         path: "/update-model/:id",
+        loader: ({ params }) => {
+          return fetch(`http://localhost:3000/models/${params.id}`);
+        },
         element: (
           <PrivateRoute>
             <UpdateModel />
           </PrivateRoute>
         ),
-          loader: ({params}) => fetch(`https://3d-model-server.vercel.app/models/${params.id}`)
+        // loader: ({ params }) =>
+        //   fetch(`https://3d-model-server.vercel.app/models/${params.id}`),
       },
+
       {
         path: "/auth/login",
         element: <Login />,

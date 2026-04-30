@@ -1,8 +1,7 @@
-import { use, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../context/AuthContext";
-import toast from "react-hot-toast";
+import { use, useEffect, useState } from "react";
 
 const ModelDetails = () => {
   const navigate = useNavigate();
@@ -10,10 +9,11 @@ const ModelDetails = () => {
   const [model, setModel] = useState({});
   const [loading, setLoading] = useState(true);
   const { user } = use(AuthContext);
-  const [refetch, setRefecth] = useState(false)
+  // const data = useLoaderData();
+  // const model = data.result;
 
   useEffect(() => {
-    fetch(`https://3d-model-server.vercel.app/models/${id}`, {
+    fetch(`http://localhost:3000/models/${id}`, {
       headers: {
         authorization: `Bearer ${user.accessToken}`,
       },
@@ -21,11 +21,9 @@ const ModelDetails = () => {
       .then((res) => res.json())
       .then((data) => {
         setModel(data.result);
-        console.log(" Api called!")
-        console.log(data);
         setLoading(false);
       });
-  }, [user, id, refetch]);
+  }, []);
 
   const handleDlete = () => {
     Swal.fire({
@@ -38,22 +36,20 @@ const ModelDetails = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`https://3d-model-server.vercel.app/models/${model._id}`, {
+        fetch(`http://localhost:3000/models/${model._id}`, {
           method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
+          // body: JSON.stringify(formData),
         })
           .then((res) => res.json())
           .then((data) => {
             console.log(data);
-            navigate("/all-models");
-
             Swal.fire({
               title: "Deleted!",
               text: "Your file has been deleted.",
               icon: "success",
             });
+            navigate("/all-models");
           })
           .catch((err) => {
             console.log(err);
@@ -62,55 +58,9 @@ const ModelDetails = () => {
     });
   };
 
-  const handleDownload = () => {
-    const finalModel = {
-      name: model.name,
-      downloads: model.downloads,
-      created_by: model.created_by,
-      description: model.description,
-      thumbnail: model.thumbnail,
-      created_at: new Date(),
-      downloaded_by: user.email,
-    };
-
-    fetch(`https://3d-model-server.vercel.app/downloads/${model._id}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(finalModel),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        toast.success("Successfully downloaded!");
-        setRefecth(!refetch)
-
-        // alternative solution of realtime download count update
-
-    //     fetch(`https://3d-model-server.vercel.app/models/${id}`, {
-    //   headers: {
-    //     authorization: `Bearer ${user.accessToken}`,
-    //   },
-    // })
-    //   .then((res) => res.json())
-    //   .then((data) => {
-    //     setModel(data.result);
-    //     console.log(" Api called!")
-    //     console.log(data);
-    //     setLoading(false);
-    //   });
-
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
   if (loading) {
     return <div> Loading...</div>;
   }
-
   return (
     <div className="max-w-5xl mx-auto p-4 md:p-6 lg:p-8">
       <div className="card bg-base-100 shadow-xl border border-gray-200 rounded-2xl overflow-hidden">
@@ -150,7 +100,7 @@ const ModelDetails = () => {
                 Update Model
               </Link>
               <button
-                onClick={handleDownload}
+                // onClick={handleDownload}
                 className="btn btn-secondary rounded-full"
               >
                 Download

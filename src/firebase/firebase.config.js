@@ -6,15 +6,14 @@ import { getAuth } from "firebase/auth";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  apiKey: "AIzaSyDe4dGiM4Wc-8S_GderBil0H9HIBj0BSus",
+  authDomain: "bazar-models.firebaseapp.com",
+  projectId: "bazar-models",
+  storageBucket: "bazar-models.firebasestorage.app",
+  messagingSenderId: "555641437476",
+  appId: "1:555641437476:web:6f90cbf86767227d9807b1"
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
-export const auth = getAuth(app);
+export const auth = getAuth(app)
