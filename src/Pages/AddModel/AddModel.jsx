@@ -1,10 +1,12 @@
 import { use } from "react";
 import { AuthContext } from "../../context/AuthContext";
-// import toast from "react-hot-toast";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router";
 // import { data } from "react-router";
 
 const AddModal = () => {
   const { user } = use(AuthContext);
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -27,6 +29,8 @@ const AddModal = () => {
     })
       .then((res) => res.json())
       .then((data) => {
+        toast.success("Model Added Successfully");
+        navigate("/all-models");
         console.log(data);
       })
       .catch((err) => {
