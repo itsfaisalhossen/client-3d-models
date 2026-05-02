@@ -5,22 +5,8 @@ import { ModelCard } from "../../components/ModelCard";
 const MyModels = () => {
   const { user } = use(AuthContext);
   const [models, setModels] = useState([]);
-  console.log(models);
 
   const [loading, setLoading] = useState(true);
-
-  //   useEffect(() => {
-  //     fetch(`https://3d-model-server.vercel.app/my-models?email=${user.email}`, {
-  //       headers: {
-  //         authorization: `Bearer ${user.accessToken}`,
-  //       },
-  //     })
-  //       .then((res) => res.json())
-  //       .then((data) => {
-  //         setModels(data);
-  //         setLoading(false);
-  //       });
-  //   }, [user]);
 
   useEffect(() => {
     fetch(`http://localhost:3000/my-models?email=${user.email}`, {

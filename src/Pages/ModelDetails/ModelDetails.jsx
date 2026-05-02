@@ -2,6 +2,7 @@ import { Link, useNavigate, useParams } from "react-router";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../context/AuthContext";
 import { use, useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 const ModelDetails = () => {
   const navigate = useNavigate();
@@ -43,7 +44,7 @@ const ModelDetails = () => {
         })
           .then((res) => res.json())
           .then((data) => {
-            console.log(data);
+            // console.log(data);
             Swal.fire({
               title: "Deleted!",
               text: "Your file has been deleted.",
@@ -56,6 +57,22 @@ const ModelDetails = () => {
           });
       }
     });
+  };
+
+  const handleDownload = () => {
+    fetch(`http://localhost:3000/downloads`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...model, downloaded_by: user.email }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        toast.success("Model Downloaded");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   if (loading) {
@@ -100,7 +117,7 @@ const ModelDetails = () => {
                 Update Model
               </Link>
               <button
-                // onClick={handleDownload}
+                onClick={handleDownload}
                 className="btn btn-secondary rounded-full"
               >
                 Download
